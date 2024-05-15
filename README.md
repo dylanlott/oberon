@@ -1,2 +1,3 @@
 # oberon
-a command line resource allocation game
+
+> a command line resource allocation game
