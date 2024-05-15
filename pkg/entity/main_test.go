@@ -13,6 +13,13 @@ func TestMain(t *testing.T) {
 	entity := world.NewEntity()
 
 	world.AddResource(entity, Resource{Name: "Gold", Count: 0})
+	world.AddShip(entity, Ship{
+		Name:    "Karakoum",
+		OwnerID: "shakezula",
+		Cargo: []Resource{
+			{Name: "Gold", Count: 1},
+		},
+	})
 	world.AddStarSystem(entity, StarSystem{Name: "Alpha Centauri"})
 
 	ticker := time.NewTicker(tickDuration)
@@ -20,7 +27,7 @@ func TestMain(t *testing.T) {
 
 	done := make(chan bool)
 
-	go func() {
+	go func(world *World, ticker *time.Ticker, done chan bool) {
 		for {
 			select {
 			case <-done:
@@ -33,7 +40,7 @@ func TestMain(t *testing.T) {
 				fmt.Printf("Entity %d Star System: %+v\n", entity, *world.starSystems[world.entityIndex[entity]])
 			}
 		}
-	}()
+	}(world, ticker, done)
 
 	// Run the ticker for 10 ticks for example purposes
 	time.Sleep(10 * tickDuration)
